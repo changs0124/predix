@@ -10,9 +10,9 @@ export const useServerInfoQuery = (tabId) => {
     const [isQueryEnabled, setIsQueryEnabled] = useState(true);
 
     const info = useQuery({
-        queryKey: ['info', serverInfo],
+        queryKey: ["info", serverInfo],
         queryFn: () => exeInstance(serverInfo?.port).get(`/info/${serverInfo?.id}`).then(res => res.data),
-        enabled: serverInfo?.id !== '' && !!serverInfo?.port,
+        enabled: serverInfo?.id !== "" && !!serverInfo?.port,
         retry: false,
         refetchOnWindowFocus: false,
         refetchIntervalInBackground: true,

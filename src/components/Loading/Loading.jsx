@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import * as s from './style';
-import { ClipLoader } from 'react-spinners';
+import * as s from "./style";
+import { ClipLoader } from "react-spinners";
 
 function Loading() {
     return (
@@ -12,9 +12,9 @@ function Loading() {
                             marginBottom: "10px"    
 
                         }}
-                        color='#EF5B25'
+                        color="#EF5B25"
                         size={100}
-                        aria-label='Loading...'
+                        aria-label="Loading..."
                     />
                     <p>Loading...</p>
                 </div>

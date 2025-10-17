@@ -7,7 +7,7 @@ export const layout = (serverId) => css`
     border: 3px solid #dbdbdb;
     border-radius: 15px;
     padding: 10px;
-    width: ${!!serverId && serverId === 1 ? '64.5' : '100'}%;
+    width: ${!!serverId && serverId === 1 ? "64.5" : "100"}%;
     height: 100%;
 `;
 

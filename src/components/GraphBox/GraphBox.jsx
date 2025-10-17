@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
-import * as s from './style';
-import Plot from 'react-plotly.js';
-import { useRecoilValue } from 'recoil';
-import { serverIdAtom, tabIdAtom } from '../../atoms/tabAtoms';
-import { useGraphPlotData } from '../../hooks/useGraphPlotData';
+import * as s from "./style";
+import Plot from "react-plotly.js";
+import { useRecoilValue } from "recoil";
+import { serverIdAtom, tabIdAtom } from "../../atoms/tabAtoms";
+import { useGraphPlotData } from "../../hooks/useGraphPlotData";
 
 function GraphBox({ graphInfo }) {
     const tabId = useRecoilValue(tabIdAtom);
@@ -22,7 +22,7 @@ function GraphBox({ graphInfo }) {
                         data={plotData}
                         layout={plotLayout}
                         useResizeHandler={true}
-                        style={{ width: '100%', height: '100%' }}
+                        style={{ width: "100%", height: "100%" }}
                         config={{ responsive: false }}
                     />
                 }

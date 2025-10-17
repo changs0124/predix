@@ -1,5 +1,5 @@
-import { BrowserWindow, app } from 'electron';
-import path from 'path';
+import { BrowserWindow, app } from "electron";
+import path from "path";
 
 const isDev = !app.isPackaged;
 
@@ -17,8 +17,8 @@ export const createSplashWindow = () => {
     });
 
     const splashURL = isDev
-        ? 'http://localhost:3000/splash.html'
-        : `file://${path.join(app.getAppPath(), 'build/splash.html')}`;
+        ? "http://localhost:3000/splash.html"
+        : `file://${path.join(app.getAppPath(), "build/splash.html")}`;
 
     splash.loadURL(splashURL).catch(console.error);
     return splash;

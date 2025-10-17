@@ -1,6 +1,6 @@
-import { BrowserWindow, app } from 'electron';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import { BrowserWindow, app } from "electron";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -15,7 +15,7 @@ export const createMainWindow = ({ onReadyToShow }) => {
         resizable: false,
         autoHideMenuBar: true,
         webPreferences: {
-            preload: path.join(__dirname, '../../preload.js'),
+            preload: path.join(__dirname, "../../preload.js"),
             contextIsolation: true,
             nodeIntegration: false,
             sandbox: true,
@@ -23,13 +23,13 @@ export const createMainWindow = ({ onReadyToShow }) => {
     });
 
     const entryURL = isDev
-        ? 'http://localhost:3000'
-        : `file://${path.join(app.getAppPath(), 'build/index.html')}`;
+        ? "http://localhost:3000"
+        : `file://${path.join(app.getAppPath(), "build/index.html")}`;
 
     win.loadURL(entryURL).catch(console.error);
 
     if (onReadyToShow) {
-        win.once('ready-to-show', onReadyToShow);
+        win.once("ready-to-show", onReadyToShow);
     }
 
     return win;

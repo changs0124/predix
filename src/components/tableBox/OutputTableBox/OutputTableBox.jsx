@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import { useEffect, useRef } from 'react';
-import * as s from './style';
+import { useEffect, useRef } from "react";
+import * as s from "./style";
 
 function OutputTableBox({ tableHeader, outputDatas }) {
     const latestRowRef = useRef(null);
@@ -10,8 +10,8 @@ function OutputTableBox({ tableHeader, outputDatas }) {
         if (!!outputDatas?.length && latestRowRef.current) {
             // 최신 행으로 부드럽게 스크롤 이동
             latestRowRef.current.scrollIntoView({
-                behavior: 'smooth', // 부드러운 스크롤 효과
-                block: 'end' // 뷰포트의 아래쪽에 맞춤
+                behavior: "smooth", // 부드러운 스크롤 효과
+                block: "end" // 뷰포트의 아래쪽에 맞춤
             });
         }
     }, [outputDatas]);

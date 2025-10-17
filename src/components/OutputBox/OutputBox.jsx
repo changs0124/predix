@@ -1,10 +1,10 @@
 /** @jsxImportSource @emotion/react */
-import * as s from './style';
-import OutputTableBox from '../tableBox/OutputTableBox/OutputTableBox';
+import * as s from "./style";
+import OutputTableBox from "../tableBox/OutputTableBox/OutputTableBox";
 import { IoMdDownload } from "react-icons/io";
-import { useRecoilValue } from 'recoil';
-import { outPutDatasAtom } from '../../atoms/dataAtoms';
-import { tabIdAtom } from '../../atoms/tabAtoms';
+import { useRecoilValue } from "recoil";
+import { outPutDatasAtom } from "../../atoms/dataAtoms";
+import { tabIdAtom } from "../../atoms/tabAtoms";
 
 function OutputBox({ info }) {
     const tabId = useRecoilValue(tabIdAtom);

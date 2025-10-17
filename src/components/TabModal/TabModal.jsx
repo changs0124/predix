@@ -1,10 +1,10 @@
 /** @jsxImportSource @emotion/react */
-import { useRecoilCallback, useSetRecoilState } from 'recoil';
-import * as s from './style';
+import { useRecoilCallback, useSetRecoilState } from "recoil";
+import * as s from "./style";
 import { IoIosClose } from "react-icons/io";
-import { serverIdAtom, tabIdAtom, tabsAtom } from '../../atoms/tabAtoms';
-import { v4 as uuidv4 } from 'uuid';
-import { tabStatusAtom } from '../../atoms/statusAtoms';
+import { serverIdAtom, tabIdAtom, tabsAtom } from "../../atoms/tabAtoms";
+import { v4 as uuidv4 } from "uuid";
+import { tabStatusAtom } from "../../atoms/statusAtoms";
 
 function TabModal() {
     const setTabStatus = useSetRecoilState(tabStatusAtom);

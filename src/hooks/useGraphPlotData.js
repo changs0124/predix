@@ -19,7 +19,7 @@ export const useGraphPlotData = ({ graphInfo }) => {
         const firstRow = outputDatas[0] ?? {};
         const dataKeys = Object.keys(firstRow).filter((k) => {
             const v = firstRow[k];
-            return v && typeof v === 'object' && 'data' in v;
+            return v && typeof v === "object" && "data" in v;
         });
 
         // 2) X축: 행 개수만큼 1..N 시퀀스
@@ -30,7 +30,7 @@ export const useGraphPlotData = ({ graphInfo }) => {
         const traces = dataKeys.map((keyName, idx) => {
             const y = outputDatas.map((row) => {
                 const v = row?.[keyName]?.data;
-                if (typeof v === 'number') {
+                if (typeof v === "number") {
                     if (v > maxY) maxY = v;
                     return v;
                 }
@@ -43,8 +43,8 @@ export const useGraphPlotData = ({ graphInfo }) => {
             return {
                 x: xValues,
                 y,
-                type: 'scatter',
-                mode: 'lines+markers',
+                type: "scatter",
+                mode: "lines+markers",
                 marker: { color, size: 8 },
                 line: { color, width: 3 },
                 name: keyName,
@@ -60,8 +60,8 @@ export const useGraphPlotData = ({ graphInfo }) => {
             xaxis: {
                 title: graphInfo?.xTitle,
                 showspikes: true,
-                spikemode: 'across',
-                spikesnap: 'data',
+                spikemode: "across",
+                spikesnap: "data",
                 showline: true,
                 showgrid: true,
             },
@@ -69,9 +69,9 @@ export const useGraphPlotData = ({ graphInfo }) => {
                 title: graphInfo?.yTitle,
                 range: [0, yAxisMax],
             },
-            hovermode: 'x unified',
+            hovermode: "x unified",
             showlegend: true,
-            legend: { x: 1.02, xanchor: 'left', y: 1 },
+            legend: { x: 1.02, xanchor: "left", y: 1 },
         };
 
         return { data: traces, layout };

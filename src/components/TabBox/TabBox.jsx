@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
-import * as s from './style';
-import { useRecoilCallback, useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import * as s from "./style";
+import { useRecoilCallback, useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { IoIosClose } from "react-icons/io";
-import { inputDataAtom, inputDatasAtom, outPutDatasAtom, serverInfoAtom } from '../../atoms/dataAtoms';
-import { serverIdAtom, tabIdAtom, tabsAtom } from '../../atoms/tabAtoms';
-import { disabledAtom, inputStatusAtom, tabStatusAtom } from '../../atoms/statusAtoms';
-import { toast } from 'react-toastify';
+import { inputDataAtom, inputDatasAtom, outPutDatasAtom, serverInfoAtom } from "../../atoms/dataAtoms";
+import { serverIdAtom, tabIdAtom, tabsAtom } from "../../atoms/tabAtoms";
+import { disabledAtom, inputStatusAtom, tabStatusAtom } from "../../atoms/statusAtoms";
+import { toast } from "react-toastify";
 
 function TabBox({ tab }) {
     const [tabId, setTabId] = useRecoilState(tabIdAtom);

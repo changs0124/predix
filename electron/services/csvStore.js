@@ -16,7 +16,7 @@ const store = {
     // tail(증분 읽기) 상태
     tail: {
         offset: 0, // 파일 끝까지 읽어들인 바이트 위치(다음 readStream start 지점)
-        carry: '', // 조각난 마지막 줄(개행으로 끝나지 않은 누적 문자열 버퍼)
+        carry: "", // 조각난 마지막 줄(개행으로 끝나지 않은 누적 문자열 버퍼)
         header: null // CSV 헤더(append된 라인을 객체로 매핑할 때 사용)
     },
 

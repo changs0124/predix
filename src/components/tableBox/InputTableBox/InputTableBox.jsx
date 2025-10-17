@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
-import { useEffect, useRef } from 'react';
-import * as s from './style';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { serverIdAtom, tabIdAtom } from '../../../atoms/tabAtoms';
-import { inputDataAtom, inputDatasAtom } from '../../../atoms/dataAtoms';
+import { useEffect, useRef } from "react";
+import * as s from "./style";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { serverIdAtom, tabIdAtom } from "../../../atoms/tabAtoms";
+import { inputDataAtom, inputDatasAtom } from "../../../atoms/dataAtoms";
 
 function InputTableBox({ parameter }) {
     const tabId = useRecoilValue(tabIdAtom);
@@ -18,8 +18,8 @@ function InputTableBox({ parameter }) {
         if (!!inputDatas?.length && latestRowRef.current) {
             // 최신 행으로 부드럽게 스크롤 이동
             latestRowRef.current.scrollIntoView({
-                behavior: 'smooth', // 부드러운 스크롤 효과
-                block: 'end'        // 뷰포트의 아래쪽에 맞춤
+                behavior: "smooth", // 부드러운 스크롤 효과
+                block: "end"        // 뷰포트의 아래쪽에 맞춤
             });
         }
     }, [inputDatas]);
@@ -72,7 +72,7 @@ function InputTableBox({ parameter }) {
                             parameter?.map((param, idx) => (
                                 <tr key={idx}>
                                     <th>{param?.name}</th>
-                                    <td><input name={param?.key} type='text' value={inputData[param?.key]} onChange={handleInputDataOnChange} autoFocus={true} /></td>
+                                    <td><input name={param?.key} type="text" value={inputData[param?.key]} onChange={handleInputDataOnChange} autoFocus={true} /></td>
                                 </tr>
                             ))
                         }

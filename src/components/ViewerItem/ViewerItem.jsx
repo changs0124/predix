@@ -1,12 +1,12 @@
 /** @jsxImportSource @emotion/react */
-import * as s from './style';
+import * as s from "./style";
 import { Html } from "@react-three/drei";
 import { useRef, useMemo } from "react";
-import { useStlGeometry } from '../../hooks/useGeometry';
-import { useHoverCursor } from '../../hooks/useHovercursor';
-import { labelPosFromBboxTop } from '../../utils/three';
-import { fragmentShader, vertexShader } from '../../shaders/temperaturePhong';
-import { useTempShaderUniforms } from '../../hooks/useTempShaderUniforms';
+import { useStlGeometry } from "../../hooks/useGeometry";
+import { useHoverCursor } from "../../hooks/useHovercursor";
+import { labelPosFromBboxTop } from "../../utils/three";
+import { fragmentShader, vertexShader } from "../../shaders/temperaturePhong";
+import { useTempShaderUniforms } from "../../hooks/useTempShaderUniforms";
 
 function ViewerItem({ filePath, data, min, max, scale = 0.5 }) {
     const meshRef = useRef(null);

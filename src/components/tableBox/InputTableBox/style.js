@@ -46,5 +46,5 @@ export const tableStyle = css`
 `;
 
 export const cusTr = (idx, len) => css`
-  background-color: ${idx === len ? '#eeeeee' : 'transparent'};
+  background-color: ${idx === len ? "#eeeeee" : "transparent"};
 `;

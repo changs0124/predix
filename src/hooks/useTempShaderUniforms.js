@@ -1,7 +1,7 @@
-import * as THREE from 'three';
+import * as THREE from "three";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useRef } from "react";
-import { clamp01, mapRange01 } from '../utils/temperature';
+import { clamp01, mapRange01 } from "../utils/temperature";
 
 export const useTempShaderUniforms = ({ data, min, max, lightPosition = [10, 10, 10] }) => {
     const { camera } = useThree();

@@ -1,6 +1,6 @@
-import * as THREE from 'three';
+import * as THREE from "three";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
+import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js";
 
 // filePath > ArrayBuffer > STL 파싱 > bbox/sphere 계산 > centerOffset 반환.
 // 언마운트/경로 변경 시 이전 geometry dispose.

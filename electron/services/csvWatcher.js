@@ -1,21 +1,38 @@
-import fs from 'fs';
-import chokidar from 'chokidar';
-import { readCsvAll } from './csvTailer.js';
-import { resetCsvRows } from './csvStore.js';
-import path from 'path';
-import { app } from 'electron';
+import fs from "fs";
+import chokidar from "chokidar";
+import { readCsvAll } from "./csvTailer.js";
+import { resetCsvRows } from "./csvStore.js";
+import path from "path";
+import { app, dialog, shell } from "electron";
 
-const PATH_FILE = path.join(app.getPath('userData'), 'path.txt');
+const PATH_FILE = path.join(app.getPath("userData"), "path.txt");
 
-const readPathFile = () => {
+const readPathFile = async (mainWindow) => {
     try {
         const raw = fs.readFileSync(PATH_FILE, "utf-8");
-        const v = raw.trim().replace(/^['"]|['"]$/g, "");
+        const v = raw.trim().replace(/^[""]|[""]$/g, "");
+
         // 임시 로그
-        console.log('[path.txt] value =', JSON.stringify(v));
+        console.log("[path.txt] value =", JSON.stringify(v));
         return v;
-    } catch {
-        console.warn('[path.txt] read failed:', e?.message);
+    } catch (e) {
+        // 임시 로그
+        console.warn("[path.txt] read failed:", e?.message);
+        await dialog.showMessageBox(mainWindow, {
+            type: "info",
+            title: "파일 없음",
+            message:
+                "path.txt 파일이 존재하지 않습니다.\n\n" +
+                "프로그램이 데이터를 읽기 위해서는 path.txt가 필요합니다.\n" +
+                "path.txt를 생성한 후 프로그램을 다시 실행해주세요.",
+            buttons: ["폴더 열기", "닫기"],
+            defaultId: 0,
+            cancelId: 1,
+        }).then(async (res) => {
+            if (res.response === 0) {
+                await shell.openPath(app.getPath("userData"));
+            }
+        });
         return null;
     }
 }
@@ -44,44 +61,43 @@ const watchCsv = (csvPath, mainWindow) => {
     });
 
     // 파일이 생겼을 때: 전체를 한 번 파싱해 메모리 캐시에 넣고, 렌더러에 total 행수와 함께 ready 신호
-    watcher.on('add', () => {
+    watcher.on("add", () => {
         const rows = readCsvAll({ csvPath });
         resetCsvRows(rows);
-        mainWindow?.webContents?.send('csv:file-status', { status: 'ready', total: rows.length });
+        mainWindow?.webContents?.send("csv:file-status", { status: "ready", total: rows.length });
     });
 
     // 파일 내용 변경: 여기서는 즉시 파싱하지 않고 "바뀌었다" 신호만 보냄
     // (실제 증분 읽기(tail)는 csvTailer의 tailReadNewBytes 쪽 또는 렌더러 루프 트리거에서 수행)
-    watcher.on('change', () => {
-        mainWindow?.webContents?.send('csv:file-status', { status: 'changed' });
+    watcher.on("change", () => {
+        mainWindow?.webContents?.send("csv:file-status", { status: "changed" });
     });
 
     // 파일 삭제/이동: 메모리 캐시를 비우고 렌더러에 missing 신호
-    watcher.on('unlink', () => {
+    watcher.on("unlink", () => {
         resetCsvRows([]);
-        mainWindow?.webContents?.send('csv:file-status', { status: 'missing' });
+        mainWindow?.webContents?.send("csv:file-status", { status: "missing" });
     });
 
     // 감시 중 오류: 에러 메시지와 함께 브로드캐스트
-    watcher.on('error', (err) => {
-        mainWindow?.webContents?.send('csv:file-status', { status: 'error', message: String(err) });
+    watcher.on("error", (err) => {
+        mainWindow?.webContents?.send("csv:file-status", { status: "error", message: String(err) });
     });
 
     // 필요하면 호출자에서 watcher를 더 다루도록 반환
     return watcher;
 }
 
-
-export const startCsvWatcher = (mainWindow) => {
-    let currentCsvPath = readPathFile();
+export const startCsvWatcher = async (mainWindow) => {
+    let currentCsvPath = await readPathFile(mainWindow);
     // readPathFile()로 path.txt 내용 읽어옴
     // 유효한 경로가 있다면 watchCsv() 호출해서 감시자 생성 아닌 경우 null
     let csvWatcher = currentCsvPath ? watchCsv(currentCsvPath, mainWindow) : null;
 
     // path.txt 파일 자체를 감시(메모장 생성 및 변경시 event 발생)
     const pathWatcher = chokidar.watch(PATH_FILE, { ignoreInitial: true });
-    const onPathFileUpdate = () => {
-        const nextPath = readPathFile();
+    const onPathFileUpdate = async () => {
+        const nextPath = await readPathFile(mainWindow);
         if (nextPath && nextPath !== currentCsvPath) {
             csvWatcher?.close();
             csvWatcher = watchCsv(nextPath, mainWindow);
@@ -89,8 +105,29 @@ export const startCsvWatcher = (mainWindow) => {
         }
     };
 
-    pathWatcher.on('add', onPathFileUpdate);    // ← 추가
-    pathWatcher.on('change', onPathFileUpdate); // 기존
+    pathWatcher.on("add", onPathFileUpdate);
+    pathWatcher.on("change", onPathFileUpdate);
+
+    pathWatcher.on("unlink", async () => {
+        csvWatcher?.close();
+        csvWatcher = null;
+        currentCsvPath = null;
+
+        await dialog.showMessageBox(mainWindow, {
+            type: "warning",
+            title: "path.txt가 삭제되었습니다",
+            message:
+                "경로 설정 파일(path.txt)이 삭제되었습니다.\n\n" +
+                "path.txt를 다시 생성한 뒤, 프로그램을 재실행하거나 파일을 복구해주세요.",
+            buttons: ["폴더 열기", "닫기"],
+            defaultId: 0,
+            cancelId: 1,
+        }).then(async (res) => {
+            if (res.response === 0) {
+                await shell.openPath(app.getPath("userData"));
+            }
+        });
+    });
 
     return { getCsvPath: () => currentCsvPath, pathWatcher, csvWatcher };
 }

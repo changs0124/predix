@@ -1,6 +1,6 @@
-import fs from 'fs';
-import Papa from 'papaparse';
-import { getState, pushQueue } from './csvStore.js';
+import fs from "fs";
+import Papa from "papaparse";
+import { getState, pushQueue } from "./csvStore.js";
 
 /** CSV 파일을 한 번에 읽어 전부 파싱해서 배열로 반환
  * - return [{헤더: 값}, {헤더: 값}, ...] 형태의 배열.
@@ -9,7 +9,7 @@ import { getState, pushQueue } from './csvStore.js';
 export const readCsvAll = ({ csvPath }) => {
     try {
         // CSV 파일을 텍스트로 읽기
-        const text = fs.readFileSync(csvPath, 'utf8');
+        const text = fs.readFileSync(csvPath, "utf8");
 
         // Papa.parse: CSV 파서
         const parsed = Papa.parse(text, {
@@ -30,7 +30,7 @@ export const readCsvAll = ({ csvPath }) => {
 */
 export const readCsvAllWithHeader = ({ csvPath }) => {
     try {
-        const text = fs.readFileSync(csvPath, 'utf8');
+        const text = fs.readFileSync(csvPath, "utf8");
         const parsed = Papa.parse(text, { header: true, skipEmptyLines: true });
 
         // 전체 데이터(배열)
@@ -51,7 +51,7 @@ export const readCsvAllWithHeader = ({ csvPath }) => {
 /** CSV 키(헤더명)를 안전하게 정제(null/undefined > "", 공백 제거)
  * - CSV 헤더가 지저분해도 안전하게 키로 쓰기 위한 보조 함수
 */
-const keySafe = (k) => String(k ?? '').trim();
+const keySafe = (k) => String(k ?? "").trim();
 
 /** 완성된 CSV 라인 문자열 배열(lines)을 파싱해서 queue에 적재
  * - tail.header가 없으면 첫 라인을 헤더로 간주하고 저장
@@ -63,7 +63,7 @@ const ingestCompleteLinesToQueue = (lines) => {
     if (!lines?.length) return;
 
     // 안전하게 파싱하려고 마지막에 개행(\n)을 하나 붙임
-    const csvText = lines.join('\n') + '\n';
+    const csvText = lines.join("\n") + "\n";
     const parsed = Papa.parse(csvText, { header: false, skipEmptyLines: true });
     if (!parsed?.data?.length) return;
 
@@ -116,7 +116,7 @@ export const tailReadNewBytes = ({csvPath, mainWindow}) => {
     // 파일이 더 작아졌다면(롤오버/초기화), 처음부터 다시
     if (stat.size < tail.offset) {
         tail.offset = 0;
-        tail.carry = '';
+        tail.carry = "";
     }
 
     // 변화가 없으면 탈출
@@ -129,22 +129,22 @@ export const tailReadNewBytes = ({csvPath, mainWindow}) => {
     const rs = fs.createReadStream(csvPath, {
         start: tail.offset,
         end: stat.size - 1, // end는 포함이기에 > -1
-        encoding: 'utf8',
+        encoding: "utf8",
         highWaterMark: 64 * 1024 // 한 번에 읽는 청크 크기(지연/자원 타협값)
     });
     // 완성된 줄(트림된 문자열) 모음
     const completed = [];
 
-    rs.on('data', chunk => {
+    rs.on("data", chunk => {
         // 기존 carry(지난번에 끊긴 반쪽 줄) + 새 chunk 합치기
         // CRLF(\r\n)를 LF(\n)로 통일
-        const text = (tail.carry + chunk).replace(/\r/g, '');
+        const text = (tail.carry + chunk).replace(/\r/g, "");
 
-        // '\n' 기준으로 쭉 자르기
-        const parts = text.split('\n');
+        // "\n" 기준으로 쭉 자르기
+        const parts = text.split("\n");
 
-        // 마지막 조각은 '\n'으로 끝나지 않을 수 있음 > carry에 저장해서 다음 청크와 이어 붙임
-        tail.carry = parts.pop() ?? '';
+        // 마지막 조각은 "\n"으로 끝나지 않을 수 있음 > carry에 저장해서 다음 청크와 이어 붙임
+        tail.carry = parts.pop() ?? "";
 
         // 중간에 완성된 라인들만 임시 배열에 모으기(양끝 공백 제거)
         for (const line of parts) {
@@ -153,7 +153,7 @@ export const tailReadNewBytes = ({csvPath, mainWindow}) => {
         }
     });
 
-    rs.on('close', () => {
+    rs.on("close", () => {
         // 다음 tail은 파일 끝에서 시작
         tail.offset = stat.size;
         st.reading = false;
@@ -163,11 +163,11 @@ export const tailReadNewBytes = ({csvPath, mainWindow}) => {
             ingestCompleteLinesToQueue(completed);
 
             // 렌더러에 "changed" 알림 > 화면 쪽 루프가 바로 소비할 수 있게 트리거
-            mainWindow?.webContents?.send('csv:file-status', { status: 'changed' });
+            mainWindow?.webContents?.send("csv:file-status", { status: "changed" });
         }
     });
 
-    rs.on('error', () => {
+    rs.on("error", () => {
         // 에러가 나도 읽는 중 상태를 반드시 해제
         st.reading = false;
     });

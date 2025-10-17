@@ -50,7 +50,7 @@ export const useCsvProcess = ({ processTemp }) => {
                 // 멈춤이면 스케줄 없이 즉시 중단 (Effect B가 재시작 때 깨움)
                 if (!inputStatusRef.current) return;
 
-                // 한 루프에 '1줄'만 처리
+                // 한 루프에 "1줄"만 처리
                 const res = await window.electronAPI.csvNext();
                 if (!mountedRef.current) return;
 
@@ -66,7 +66,7 @@ export const useCsvProcess = ({ processTemp }) => {
                     timerRef.current = setTimeout(loopFnRef.current, backoff);
                 }
             } catch (e) {
-                console.error('[renderer] loop error:', e);
+                console.error("[renderer] loop error:", e);
                 if (inputStatusRef.current) {
                     if (timerRef.current) { clearTimeout(timerRef.current); timerRef.current = null; }
                     timerRef.current = setTimeout(loopFnRef.current, 1000);
@@ -79,7 +79,7 @@ export const useCsvProcess = ({ processTemp }) => {
         // 파일 상태 이벤트 핸들러 (파일 변경되면 즉시 loop 실행)
         const onStatus = (payload) => {
             if (!mountedRef.current) return;
-            if (payload?.status === 'changed' || payload?.status === 'ready') {
+            if (payload?.status === "changed" || payload?.status === "ready") {
                 if (timerRef.current) {
                     clearTimeout(timerRef.current);
                     timerRef.current = null;
@@ -95,7 +95,7 @@ export const useCsvProcess = ({ processTemp }) => {
                 const res = await window.electronAPI.csvInit();
                 if (!mountedRef.current) return;
 
-                const sig = res?.sig || '';
+                const sig = res?.sig || "";
                 if (sig && csvSig && sig === csvSig) {
                     // 같은 CSV 파일이면 지금까지 읽은 줄까지 점프
                     await window.electronAPI.csvSeek(inputDatas.length);
@@ -118,7 +118,7 @@ export const useCsvProcess = ({ processTemp }) => {
                 // 초기화 직후: inputStatus가 true라면 즉시 루프 시작
                 if (inputStatusRef.current) loopFnRef.current?.();
             } catch (e) {
-                console.warn('[renderer] csvInit 실패:', e);
+                console.warn("[renderer] csvInit 실패:", e);
                 hasInitRef.current = true; // 실패해도 루프 자체는 돌 수 있게
                 window.electronAPI?.onCsvFileStatus?.(onStatus);
                 if (inputStatusRef.current) loopFnRef.current?.();

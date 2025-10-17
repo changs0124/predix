@@ -16,7 +16,7 @@ export const useProcessMutation = ({ info, setInputStatus }) => {
     const setOutputDatas = useSetRecoilState(outPutDatasAtom(tabId));
     
     const processTemp = useMutation({
-        mutationFn: async (data) => await exeInstance(serverInfo?.port).post('/process', data),
+        mutationFn: async (data) => await exeInstance(serverInfo?.port).post("/process", data),
         onSuccess: async (res, variables) => {
             setInputDatas(prev => [...prev, variables]);
             setOutputDatas(prev => [...prev, res?.data]);
@@ -41,18 +41,18 @@ export const useProcessMutation = ({ info, setInputStatus }) => {
         },
         onError: async () => {
             setInputStatus(false);
-            await window.electronAPI.showAlert('An error occurred while processing data.');
+            await window.electronAPI.showAlert("An error occurred while processing data.");
         }
     });
 
     const processSOC = useMutation({
-        mutationFn: (data) => exeInstance(serverInfo?.port).post('/process', data),
+        mutationFn: (data) => exeInstance(serverInfo?.port).post("/process", data),
         onSuccess: async (res) => {
             setOutputDatas(prev => [...prev, res?.data]);
-            await window.electronAPI.showAlert('Prediction success');
+            await window.electronAPI.showAlert("Prediction success");
         },
         onError: async (err) => {
-            await window.electronAPI.showAlert(`Prediction failed: ${err?.message || 'Unknown error'}`);
+            await window.electronAPI.showAlert(`Prediction failed: ${err?.message || "Unknown error"}`);
         }
     });
 
@@ -66,7 +66,7 @@ export const useProcessMutation = ({ info, setInputStatus }) => {
                     id: res?.id,
                     port: res?.port
                 });
-            } else if (res?.error === 'The server is already running.') {
+            } else if (res?.error === "The server is already running.") {
                 await window.electronAPI.showAlert(res?.error);
                 setServerInfo({
                     id: res?.id,
@@ -86,7 +86,7 @@ export const useProcessMutation = ({ info, setInputStatus }) => {
                     id: res?.id,
                     port: res?.port
                 });
-            } else if (res?.error === 'The server is already running.') {
+            } else if (res?.error === "The server is already running.") {
                 await window.electronAPI.showAlert(res?.error);
                 setServerInfo({
                     id: res?.id,

@@ -46,7 +46,8 @@
     "react-start": "react-scripts start",
     "dev": "concurrently \"cross-env BROWSER=none npm start\" \"wait-on http://localhost:3000 && electron .\"",
     "electron-start": "wait-on http://localhost:3000 && electron .",
-    "build": "npm run clean && react-scripts build && electron-builder",
+    "build": "npm run clean && react-scripts build && npm run rename-title && electron-builder",
+    "rename-title": "node scripts/renameTitle.js",
     "package": "electron-builder --dir",
     "dist": "electron-builder",
     "clean": "rimraf dist build"

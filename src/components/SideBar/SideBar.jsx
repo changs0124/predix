@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
-import * as s from './style';
-import TabBox from '../TabBox/TabBox';
+import * as s from "./style";
+import TabBox from "../TabBox/TabBox";
 import { IoIosAdd } from "react-icons/io";
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { tabsAtom } from '../../atoms/tabAtoms';
-import { disabledAtom, tabStatusAtom } from '../../atoms/statusAtoms';
-import { toast } from 'react-toastify';
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { tabsAtom } from "../../atoms/tabAtoms";
+import { disabledAtom, tabStatusAtom } from "../../atoms/statusAtoms";
+import { toast } from "react-toastify";
 
 function SideBar() {
     const tabs = useRecoilValue(tabsAtom);

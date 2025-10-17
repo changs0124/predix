@@ -135,7 +135,7 @@ export const infoBox = (data, max) => css`
     & > p {
         box-sizing: border-box;
         display: flex;
-        color: ${data > max ? '#EF5B25' : '#ffffff'};
+        color: ${data > max ? "#EF5B25" : "#ffffff"};
         font-size: 18px;
         font-weight: 500;
         white-space: nowrap;
