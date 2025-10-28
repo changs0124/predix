@@ -29,7 +29,8 @@ function ViewerItem({ filePath, data, min, max, scale = 0.5 }) {
         [bbox, scale]
     );
 
-    const showTooltip = hovered && Number.isFinite(data); // 0도도 표시되도록 수정
+    // 0°C도 표시되도록 수정
+    const showTooltip = hovered && Number.isFinite(data); 
 
     // 로딩 전에는 렌더하지 않음
     if (!geometry) return null;

@@ -161,7 +161,7 @@ function ViewerBox({ info }) {
                                 >
                                     {
                                         stlList.map((stl, idx) => {
-                                            const key = info?.data?.tableHeader[idx]
+                                            const key = info?.data?.tableHeader[idx].replace(/\(.*?\)/g, "").trim();
 
                                             return (
                                                 <group

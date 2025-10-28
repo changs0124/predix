@@ -10,7 +10,7 @@ import { startCsvWatcher } from "../electron/services/csvWatcher.js";
 let mainWindow = null;
 let splashWindow = null;
 
-const onReady = () => {
+const onReady = async () => {
     splashWindow = createSplashWindow();
     mainWindow = createMainWindow({
         onReadyToShow: () => {
@@ -20,7 +20,9 @@ const onReady = () => {
     });
 
     // IPC 라우팅
-    const { getCsvPath } = startCsvWatcher(mainWindow);
+    const watcherCtx = await startCsvWatcher(mainWindow);
+    const getCsvPath = watcherCtx?.getCsvPath ?? (() => null); // 안전 가드
+    
     registerCsvIpc({ getCsvPath, mainWindow });
     registerServerIpc(mainWindow);
     registerDialogIpc(mainWindow);

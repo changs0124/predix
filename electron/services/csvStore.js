@@ -5,7 +5,7 @@
  * - append된 라인들을객체로 변환해 쌓아두는 queue
  * - 동시에 tail을 두 번 읽지 않기 위한 redding 플래그
  * - 마지막 mtime(ms) 기록(를오버/변경 감지 등 보조용)
- */
+*/
 const store = {
     // 파일 파싱 결과를 "앞에서부터" 소비하기 위한 캐시
     csvState: {

@@ -36,7 +36,10 @@ export const useCsvProcess = ({ processTemp }) => {
         mountedRef.current = true;
         hasInitRef.current = false;
         loopingRef.current = false;
-        if (timerRef.current) { clearTimeout(timerRef.current); timerRef.current = null; }
+        if (timerRef.current) {
+            clearTimeout(timerRef.current);
+            timerRef.current = null;
+        }
 
         let backoff = 1000; // 처리할 줄이 없을 때 재시도 대기 시간
 

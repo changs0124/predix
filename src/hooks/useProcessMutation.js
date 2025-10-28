@@ -20,12 +20,14 @@ export const useProcessMutation = ({ info, setInputStatus }) => {
         onSuccess: async (res, variables) => {
             setInputDatas(prev => [...prev, variables]);
             setOutputDatas(prev => [...prev, res?.data]);
-
+            
             if (res?.data) {
                 info?.data?.tableHeader?.forEach(header => {
-                    const data = res?.data[header];
+                    const key = header.replace(/\(.*?\)/g, "").trim();
+                    const data = res?.data[key];
+
                     if (data && data?.data > data?.max) {
-                        toast.error(`${header} : ${(data?.data - data?.max).toFixed(2)} 초과`,
+                        toast.error(`${header} : ${(data?.data - data?.max)?.toFixed(2)} 초과`,
                             {
                                 position: "bottom-right", // 알림 위치 (선택 사항)
                                 autoClose: 3000, // 3초 후 자동 닫힘 (선택 사항)
